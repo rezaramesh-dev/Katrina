@@ -1,15 +1,30 @@
 package com.onestackdev.katrina.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
+import android.graphics.drawable.Drawable
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.LocationSettingsStatusCodes
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.Task
+import com.onestackdev.katrina.R
+import kotlinx.coroutines.CoroutineExceptionHandler
 
 fun isOnline(context: Context): Boolean {
     val connectivityManager =
@@ -20,6 +35,10 @@ fun isOnline(context: Context): Boolean {
     else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) return true
     showMessageToast(context, "")
     return false
+}
+
+val handler = CoroutineExceptionHandler { _, exception ->
+    Log.e("Network", "Caught $exception")
 }
 
 fun showMessageToast(context: Context, message: String) {
@@ -41,6 +60,30 @@ fun setUpRecyclerVERTICAL(activity: AppCompatActivity?, rv: RecyclerView) {
     rv.itemAnimator = DefaultItemAnimator()
 }
 
+fun turnOnLocation(activity: AppCompatActivity, locationRequest: LocationRequest) {
+    val requestCode = 1000
+    val builder: LocationSettingsRequest.Builder = LocationSettingsRequest.Builder()
+        .addLocationRequest(locationRequest)
+    val result =
+        LocationServices.getSettingsClient(activity).checkLocationSettings(builder.build())
+    result.addOnCompleteListener { task: Task<LocationSettingsResponse?> ->
+        try {
+            task.getResult(ApiException::class.java)
+        } catch (e: ApiException) {
+            when (e.statusCode) {
+                LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
+                    val resolvableApiException = e as ResolvableApiException
+                    resolvableApiException.startResolutionForResult(activity, requestCode)
+                } catch (sendIntentException: IntentSender.SendIntentException) {
+                    sendIntentException.printStackTrace()
+                } catch (ex: ClassCastException) {
+                }
+                LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {}
+            }
+        }
+    }
+}
+
 fun checkLocationStatus(): Boolean {
     //GPS
     val lm: LocationManager? = null
@@ -54,13 +97,24 @@ fun checkLocationStatus(): Boolean {
     return !(!gpsEnabled && !networkEnabled)
 }
 
+fun buildLocationRequest(): LocationRequest {
+    val lo = LocationRequest.Builder(80000)
+    lo.setIntervalMillis(80000)
+    lo.setMinUpdateDistanceMeters(20f)
+    lo.setMinUpdateDistanceMeters(60000f)
+    lo.setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+    lo.setMaxUpdateDelayMillis(100)
+    return lo.build()
+}
+
 /*
+
 @SuppressLint("UseCompatLoadingForDrawables")
 fun returnImageWeather(code: Int, day: Int, context: Context): Drawable? {
     var image: Drawable? = null
     when (code) {
         1000 -> image =
-            if (day == 1) context.getDrawable(R.drawable._113) else context.getDrawable(R.drawable._113)
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.sunny)
 
         1003 -> image =
             if (day == 1) context.getDrawable(R.drawable._116) else context.getDrawable(R.drawable._116)
@@ -160,4 +214,5 @@ fun returnImageWeather(code: Int, day: Int, context: Context): Drawable? {
     }
 
     return image
-}*/
+}
+*/
