@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationRequest
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -26,6 +27,8 @@ import com.onestackdev.katrina.screens.activities.MainActivity
 import com.onestackdev.katrina.utils.buildLocationRequest
 import com.onestackdev.katrina.utils.checkLocationStatus
 import com.onestackdev.katrina.utils.handler
+import com.onestackdev.katrina.utils.returnImageWeather
+import com.onestackdev.katrina.utils.tempFormat
 import com.onestackdev.katrina.utils.turnOnLocation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -122,24 +125,24 @@ class HomeFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun getWeather(latLong: String) {
         CoroutineScope(Main).launch(handler) {
+            //73.036479, -85.152025
             val response = weatherApi.getWeather(latLong)
             when (response.code()) {
                 200 -> {
                     response.body().apply {
-                        binding.tvCity.text = "${this!!.location.region}, ${location.country}"
+                        binding.tvCity.text = "${this!!.location.name}, ${location.country}"
                         binding.tvDate.text = location.localtime
-                        binding.tvTemperature.text = if (this.current.temp_c < 1.0) {
-                            "-" + current.temp_c.toString().replace(".0", "")
-                        } else current.temp_c.toString().replace(".0", "")
+                        val temp = this.current.temp_c.toString().split(".")
+                        binding.tvTemperature.text = temp[0]
 
                         binding.tvWind.text = current.wind_kph.toString() + " Km"
                         binding.tvHumidity.text = "%" + current.humidity.toString()
                         binding.status.text = current.condition.text
 
-                        binding.tvMinTemp.text =
-                            forecast.forecastday[0].day.maxtemp_c.toString().replace(".1", "")
+                        val maxTemp = forecast.forecastday[0].day.maxtemp_c.toString().split(".")
+                        binding.tvMinTemp.text = maxTemp[0]
 
-                       /* Glide.with(MainActivity.activity)
+                        Glide.with(MainActivity.activity)
                             .load(
                                 returnImageWeather(
                                     current.condition.code,
@@ -147,7 +150,7 @@ class HomeFragment : Fragment() {
                                     MainActivity.activity
                                 )
                             )
-                            .into(binding.imageWeatherStatus)*/
+                            .into(binding.imageWeatherStatus)
                     }
                 }
             }

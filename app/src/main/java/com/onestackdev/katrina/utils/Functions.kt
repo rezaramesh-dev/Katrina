@@ -78,6 +78,7 @@ fun turnOnLocation(activity: AppCompatActivity, locationRequest: LocationRequest
                     sendIntentException.printStackTrace()
                 } catch (ex: ClassCastException) {
                 }
+
                 LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {}
             }
         }
@@ -107,112 +108,132 @@ fun buildLocationRequest(): LocationRequest {
     return lo.build()
 }
 
-/*
 
 @SuppressLint("UseCompatLoadingForDrawables")
 fun returnImageWeather(code: Int, day: Int, context: Context): Drawable? {
     var image: Drawable? = null
     when (code) {
         1000 -> image =
-            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.sunny)
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_clear)
 
         1003 -> image =
-            if (day == 1) context.getDrawable(R.drawable._116) else context.getDrawable(R.drawable._116)
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_partly_cloudy)
 
         1006 -> image =
-            if (day == 1) context.getDrawable(R.drawable._119) else context.getDrawable(R.drawable._119)
+            if (day == 1) context.getDrawable(R.drawable.cloudy) else context.getDrawable(R.drawable.cloudy)
 
-        1009 -> image = context.getDrawable(R.drawable._122)
+        1009 -> image = context.getDrawable(R.drawable.cloudy)
 
-        1030 -> image = context.getDrawable(R.drawable._143)
+        1030 -> image = context.getDrawable(R.drawable.cloudy)
 
-        1063 -> image = context.getDrawable(R.drawable._176)
+        1063 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1066 -> image = context.getDrawable(R.drawable._179)
+        1066 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.nigh_train)
 
-        1069 -> image = context.getDrawable(R.drawable._185)
+        1069 -> image = context.getDrawable(R.drawable.rain)
 
-        1072 -> image = context.getDrawable(R.drawable._185)
+        1072 -> image = context.getDrawable(R.drawable.rain)
 
-        1087 -> image = context.getDrawable(R.drawable._200)
+        1087 -> image =
+            if (day == 1) context.getDrawable(R.drawable.thunder_suny) else context.getDrawable(R.drawable.thunder_moon)
 
-        1114 -> image = context.getDrawable(R.drawable._227)
+        1114 -> image = context.getDrawable(R.drawable.snow_rain)
 
-        1117 -> image = context.getDrawable(R.drawable._230)
+        1117 -> image = context.getDrawable(R.drawable.snow_rain)
 
-        1135 -> image = context.getDrawable(R.drawable._248)
+        1135 -> image = context.getDrawable(R.drawable.cloudy)
 
-        1147 -> image = context.getDrawable(R.drawable._248)
+        1147 -> image = context.getDrawable(R.drawable.cloudy)
 
-        1150 -> image = context.getDrawable(R.drawable._266)
+        1150 -> image = context.getDrawable(R.drawable.rain)
 
-        1153 -> image = context.getDrawable(R.drawable._266)
+        1153 -> image = context.getDrawable(R.drawable.rain)
 
-        1168 -> image = context.getDrawable(R.drawable._185)
+        1168 -> image = context.getDrawable(R.drawable.rain)
 
-        1171 -> image = context.getDrawable(R.drawable._185)
+        1171 -> image = context.getDrawable(R.drawable.rain)
 
-        1180 -> image = context.getDrawable(R.drawable._176)
+        1180 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1183 -> image = context.getDrawable(R.drawable._185)
+        1183 -> image = context.getDrawable(R.drawable.rain)
 
-        1186 -> image = context.getDrawable(R.drawable._176)
+        1186 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1189 -> image = context.getDrawable(R.drawable._185)
+        1189 -> image = context.getDrawable(R.drawable.rain)
 
-        1192 -> image = context.getDrawable(R.drawable._176)
+        1192 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1195 -> image = context.getDrawable(R.drawable._185)
+        1195 -> image = context.getDrawable(R.drawable.rain)
 
-        1198 -> image = context.getDrawable(R.drawable._185)
+        1198 -> image = context.getDrawable(R.drawable.rain)
 
-        1201 -> image = context.getDrawable(R.drawable._185)
+        1201 -> image = context.getDrawable(R.drawable.rain)
 
-        1204 -> image = context.getDrawable(R.drawable._185)
+        1204 -> image = context.getDrawable(R.drawable.rain)
 
-        1207 -> image = context.getDrawable(R.drawable._185)
+        1207 -> image = context.getDrawable(R.drawable.rain)
 
-        1210 -> image = context.getDrawable(R.drawable._179)
+        1210 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1213 -> image = context.getDrawable(R.drawable._350)
+        1213 -> image = context.getDrawable(R.drawable.snow)
 
-        1216 -> image = context.getDrawable(R.drawable._179)
+        1216 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1219 -> image = context.getDrawable(R.drawable._350)
+        1219 -> image = context.getDrawable(R.drawable.sunny)
 
-        1222 -> image = context.getDrawable(R.drawable._179)
+        1222 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1225 -> image = context.getDrawable(R.drawable._338)
+        1225 -> image = context.getDrawable(R.drawable.snow)
 
-        1237 -> image = context.getDrawable(R.drawable._350)
+        1237 -> image = context.getDrawable(R.drawable.snow)
 
-        1240 -> image = context.getDrawable(R.drawable._176)
+        1240 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1243 -> image = context.getDrawable(R.drawable._176)
+        1243 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1246 -> image = context.getDrawable(R.drawable._176)
+        1246 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1249 -> image = context.getDrawable(R.drawable._182)
+        1249 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1252 -> image = context.getDrawable(R.drawable._182)
+        1252 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1255 -> image = context.getDrawable(R.drawable._179)
+        1255 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1258 -> image = context.getDrawable(R.drawable._179)
+        1258 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1261 -> image = context.getDrawable(R.drawable._179)
+        1261 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1264 -> image = context.getDrawable(R.drawable._179)
+        1264 -> image =
+            if (day == 1) context.getDrawable(R.drawable.sunny) else context.getDrawable(R.drawable.moon_cloudy)
 
-        1273 -> image = context.getDrawable(R.drawable._200)
+        1273 -> image =
+            if (day == 1) context.getDrawable(R.drawable.thunder_suny) else context.getDrawable(R.drawable.thunder_moon)
 
-        1276 -> image = context.getDrawable(R.drawable._389)
+        1276 -> image = context.getDrawable(R.drawable.thunder)
 
-        1279 -> image = context.getDrawable(R.drawable._395)
+        1279 -> image = context.getDrawable(R.drawable.heavyrain_snow)
 
-        1282 -> image = context.getDrawable(R.drawable._395)
+        1282 -> image = context.getDrawable(R.drawable.heavyrain_snow)
     }
-
     return image
 }
-*/
+
+fun tempFormat(temp: String): String {
+    return temp.substring(0, temp.indexOf("."))
+}
