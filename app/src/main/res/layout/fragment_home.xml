@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#111318"
+    android:fitsSystemWindows="true"
+    tools:context=".screens.fragments.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="#717171"
+            android:textSize="13sp"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="#D3D3D3"
+            android:textSize="15sp"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toBottomOf="@+id/tvDate" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/backgound_black"
+            android:translationY="-50dp"
+            ads:layout_constraintBottom_toBottomOf="@+id/cons"
+            ads:layout_constraintTop_toBottomOf="@+id/cons">
+
+            <View
+                android:id="@+id/view_1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="26dp"
+                android:background="#111318"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/consWindy"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/view_1"
+                app:flow_horizontalBias="3"
+                app:layout_constraintEnd_toStartOf="@+id/consTemp"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/icWindy"
+                        android:layout_width="22dp"
+                        android:layout_height="21dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/windy" />
+
+                    <TextView
+                        android:id="@+id/tvWind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="#B8BBC4"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="@+id/icWindy"
+                        app:layout_constraintStart_toStartOf="@+id/icWindy"
+                        app:layout_constraintTop_toBottomOf="@+id/icWindy" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="0.6dp"
+                android:layout_height="0dp"
+                android:layout_marginVertical="8dp"
+                android:background="#111318"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/view_1"
+                app:layout_constraintStart_toEndOf="@+id/consWindy" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/consTemp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/view_1"
+                app:flow_horizontalBias="3"
+                app:layout_constraintEnd_toStartOf="@+id/consHumidity"
+                app:layout_constraintStart_toEndOf="@+id/consWindy">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/icTemp"
+                        android:layout_width="22dp"
+                        android:layout_height="21dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_temperature" />
+
+                    <TextView
+                        android:id="@+id/tvMinTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="#B8BBC4"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="@+id/icTemp"
+                        app:layout_constraintStart_toStartOf="@+id/icTemp"
+                        app:layout_constraintTop_toBottomOf="@+id/icTemp" />
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:src="@drawable/celsius_shape_little"
+                        app:layout_constraintStart_toEndOf="@+id/tvMinTemp"
+                        app:layout_constraintTop_toTopOf="@+id/tvMinTemp"
+                        tools:ignore="ContentDescription" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="0.6dp"
+                android:layout_height="0dp"
+                android:layout_marginVertical="8dp"
+                android:background="#111318"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/view_1"
+                app:layout_constraintStart_toEndOf="@+id/consTemp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/consHumidity"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/view_1"
+                app:flow_horizontalBias="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/consTemp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/icHumidity"
+                        android:layout_width="22dp"
+                        android:layout_height="21dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_humidity" />
+
+                    <TextView
+                        android:id="@+id/tvHumidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="#B8BBC4"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="@+id/icHumidity"
+                        app:layout_constraintStart_toStartOf="@+id/icHumidity"
+                        app:layout_constraintTop_toBottomOf="@+id/icHumidity" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            ads:layout_constraintTop_toBottomOf="@+id/tvCity">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/ic_cloud"
+                ads:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvTemperature"
+                android:layout_width="wrap_content"
+                android:layout_height="130dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_extra_bold"
+                android:maxLines="1"
+                android:textColor="#D3D3D3"
+                android:textSize="105sp"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#CFB7FF"
+                android:textSize="17sp"
+                android:translationY="-10dp"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/tvTemperature" />
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/celsius_shape"
+                ads:layout_constraintStart_toEndOf="@+id/tvTemperature"
+                ads:layout_constraintTop_toTopOf="@+id/tvTemperature"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/imageWeatherStatus"
+                android:layout_width="280dp"
+                android:layout_height="300dp"
+                android:src="@drawable/snow"
+                android:translationY="-20dp"
+                android:layout_marginEnd="16dp"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvTitleAQI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="56dp"
+            android:fontFamily="@font/poppins_extra_bold"
+            android:text="@string/aqi"
+            android:textColor="#D6D6D6"
+            android:textSize="20sp"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toBottomOf="@+id/cons" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/consAQI"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_aqi"
+            ads:layout_constraintTop_toBottomOf="@+id/tvTitleAQI">
+
+            <TextView
+                android:id="@+id/tvAQI"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="36"
+                android:textColor="#63B082"
+                android:textSize="40sp"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/background_aqi_status"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginVertical="6dp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:paddingHorizontal="20dp"
+                    android:text="Good"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    ads:layout_constraintBottom_toBottomOf="parent"
+                    ads:layout_constraintEnd_toEndOf="parent"
+                    ads:layout_constraintStart_toStartOf="parent"
+                    ads:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvTitleToday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_extra_bold"
+            android:text="Today"
+            android:textColor="#D6D6D6"
+            android:textSize="20sp"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toBottomOf="@+id/consAQI" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
