@@ -234,6 +234,8 @@ fun returnImageWeather(code: Int, day: Int, context: Context): Drawable? {
     return image
 }
 
-fun tempFormat(temp: String): String {
-    return temp.substring(0, temp.indexOf("."))
+fun tempFormat(t: String): String {
+    val temp = t.split(".")
+    return temp[0]
 }
+

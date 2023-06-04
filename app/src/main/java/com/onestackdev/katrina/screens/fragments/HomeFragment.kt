@@ -3,6 +3,7 @@ package com.onestackdev.katrina.screens.fragments
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import com.onestackdev.katrina.R
 import com.onestackdev.katrina.data.AqiApiRepository
 import com.onestackdev.katrina.data.WeatherApiRepository
 import com.onestackdev.katrina.databinding.FragmentHomeBinding
@@ -132,15 +134,14 @@ class HomeFragment : Fragment() {
                     response.body().apply {
                         binding.tvCity.text = "${this!!.location.name}, ${location.country}"
                         binding.tvDate.text = location.localtime
-                        val temp = this.current.temp_c.toString().split(".")
-                        binding.tvTemperature.text = temp[0]
+                        binding.tvTemperature.text = tempFormat(this.current.temp_c.toString())
 
                         binding.tvWind.text = current.wind_kph.toString() + " Km"
                         binding.tvHumidity.text = "%" + current.humidity.toString()
                         binding.status.text = current.condition.text
 
-                        val maxTemp = forecast.forecastday[0].day.maxtemp_c.toString().split(".")
-                        binding.tvMinTemp.text = maxTemp[0]
+                        binding.tvMinTemp.text =
+                            tempFormat(forecast.forecastday[0].day.maxtemp_c.toString())
 
                         Glide.with(MainActivity.activity)
                             .load(
@@ -157,6 +158,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getAQI(lat: String, lon: String) {
         CoroutineScope(Main).launch(handler) {
             val response = aqiApi.getAQI(lat = lat, long = lon)
@@ -164,6 +166,56 @@ class HomeFragment : Fragment() {
                 200 -> {
                     response.body()?.data.apply {
                         binding.tvAQI.text = this?.current?.pollution?.aqius.toString()
+
+                        if (this?.current?.pollution?.aqius!! < 50) {
+
+                            binding.tvStatusAQI.text = "Good"
+                            binding.tvAQI.setTextColor(Color.parseColor("#00FF3A"))
+                            binding.consAQI.setBackgroundResource(R.drawable.back_status_aqi_green)
+                            binding.consStatus.setBackgroundResource(R.drawable.back_statusi_green)
+
+                        } else if (this.current.pollution.aqius < 100) {
+
+                            binding.tvStatusAQI.text = "Moderate"
+                            binding.tvAQI.setTextColor(Color.parseColor("#AE9D00"))
+                            binding.consAQI.setBackgroundResource(R.drawable.back_status_aqi_yellow)
+                            binding.consStatus.setBackgroundResource(R.drawable.back_status_yellow)
+
+                        } else if (this.current.pollution.aqius < 150) {
+
+                            binding.tvStatusAQI.text = "Unhealthy for sensitive"
+                            binding.tvAQI.setTextColor(Color.parseColor("#D16400"))
+                            binding.consStatus.setBackgroundResource(R.drawable.back_status_orange)
+                            binding.consAQI.setBackgroundResource(R.drawable.back_status_aqi_orange)
+
+                        } else if (this.current.pollution.aqius < 200) {
+
+                            binding.tvStatusAQI.text = "Unhealthy"
+                            binding.tvAQI.setTextColor(Color.parseColor("#C50000"))
+                            binding.consStatus.setBackgroundResource(R.drawable.back_status_red)
+                            binding.consAQI.setBackgroundResource(R.drawable.back_status_aqi_red)
+
+                        } else if (this.current.pollution.aqius < 250) {
+
+                            binding.tvStatusAQI.text = "Very unhealthy"
+                            binding.tvAQI.setTextColor(Color.parseColor("#C50000"))
+                            binding.consStatus.setBackgroundResource(R.drawable.back_status_red)
+                            binding.consAQI.setBackgroundResource(R.drawable.back_status_aqi_red)
+
+                        } else if (this.current.pollution.aqius < 300) {
+
+                            binding.tvStatusAQI.text = "Very unhealthy"
+                            binding.tvAQI.setTextColor(Color.parseColor("#B200F0"))
+                            binding.consStatus.setBackgroundResource(R.drawable.back_status_purpel)
+                            binding.consAQI.setBackgroundResource(R.drawable.back_status_aqi_purpel)
+
+                        } else if (this.current.pollution.aqius < 350) {
+
+                            binding.tvStatusAQI.text = "Hazardous"
+                            binding.tvAQI.setTextColor(Color.parseColor("#B200F0"))
+                            binding.consStatus.setBackgroundResource(R.drawable.back_status_purpel)
+                            binding.consAQI.setBackgroundResource(R.drawable.back_status_aqi_purpel)
+                        }
                     }
                 }
             }
