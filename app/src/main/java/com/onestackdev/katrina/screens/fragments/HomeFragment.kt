@@ -4,17 +4,18 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -28,12 +29,13 @@ import com.onestackdev.katrina.databinding.FragmentHomeBinding
 import com.onestackdev.katrina.model.Hour
 import com.onestackdev.katrina.model.WeatherAPIModel
 import com.onestackdev.katrina.screens.activities.MainActivity
+import com.onestackdev.katrina.utils.buildLocationCallback
 import com.onestackdev.katrina.utils.buildLocationRequest
 import com.onestackdev.katrina.utils.checkLocationStatus
 import com.onestackdev.katrina.utils.handler
 import com.onestackdev.katrina.utils.returnImageWeather
+import com.onestackdev.katrina.utils.setUpLocation
 import com.onestackdev.katrina.utils.setUpRecyclerHorizontal
-import com.onestackdev.katrina.utils.setUpRecyclerVERTICAL
 import com.onestackdev.katrina.utils.tempFormat
 import com.onestackdev.katrina.utils.turnOnLocation
 import com.onestackdev.katrina.viewmodel.TodayWeatherAdapter
@@ -48,10 +50,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private lateinit var locationRequest: LocationRequest
-
-    private lateinit var locationManager: LocationManager
-
     @Inject
     lateinit var weatherApi: WeatherApiRepository
 
@@ -61,22 +59,71 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var todayAdapter: TodayWeatherAdapter
 
+    //Location
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        setupLocation()
-
-        setupGetLocation()
+        getCurrentLocation()
 
         return binding.root
     }
 
-    private fun setupGetLocation() {
+    private fun getCurrentLocation() {
         locationRequest = buildLocationRequest()
+
+        if (!checkLocationStatus())
+            turnOnLocation(MainActivity.activity, locationRequest)
+
+        locationRequest = buildLocationRequest()
+        locationCallback = buildLocationCallback()
+        fusedLocationProviderClient =
+            setUpLocation(MainActivity.activity, locationRequest, locationCallback)
+
+        updateLocation()
+
+        getLocation()
+
         accessFindLocation()
-        if (!checkLocationStatus()) turnOnLocation(MainActivity.activity, locationRequest)
+    }
+
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                MainActivity.activity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                MainActivity.activity,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+            try {
+                getWeather("${it.latitude}, ${it.longitude}")
+                getAQI(it.latitude.toString(), it.longitude.toString())
+            } catch (_: Exception) {
+            }
+        }
+    }
+
+    private fun updateLocation() {
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(MainActivity.activity)
+        if (ActivityCompat.checkSelfPermission(
+                MainActivity.activity, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                MainActivity.activity, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) return
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest, locationCallback, Looper.myLooper()
+        )
     }
 
     private fun accessFindLocation() {
@@ -90,15 +137,12 @@ class HomeFragment : Fragment() {
                             MainActivity.activity, Manifest.permission.ACCESS_COARSE_LOCATION
                         ) != PackageManager.PERMISSION_GRANTED
                     ) return
-
-                    locationRequest = buildLocationRequest()
-
-                    locationManager.requestLocationUpdates(
-                        LocationManager.NETWORK_PROVIDER,
-                        10000L,
-                        10000f,
-                        locationListener
-                    )
+                    fusedLocationProviderClient.lastLocation
+                        .addOnFailureListener { }
+                        .addOnSuccessListener {
+                            getWeather("${it.latitude}, ${it.longitude}")
+                            getAQI(it.latitude.toString(), it.longitude.toString())
+                        }
                 }
 
                 override fun onPermissionDenied(permissionDeniedResponse: PermissionDeniedResponse) {
@@ -110,26 +154,6 @@ class HomeFragment : Fragment() {
                 ) {
                 }
             }).check()
-    }
-
-    private fun setupLocation() {
-        // Create persistent LocationManager reference
-        locationManager =
-            (MainActivity.activity.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager?)!!
-        if (ActivityCompat.checkSelfPermission(
-                MainActivity.activity, Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                MainActivity.activity, Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-        locationManager.requestLocationUpdates(
-            LocationManager.NETWORK_PROVIDER,
-            10000L,
-            10000f,
-            locationListener
-        )
     }
 
     @SuppressLint("SetTextI18n")
@@ -255,14 +279,6 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-        }
-    }
-
-    //define the listener
-    private val locationListener: LocationListener = LocationListener { location ->
-        CoroutineScope(Main).launch {
-            getWeather(location.latitude.toString() + "," + location.longitude.toString())
-            getAQI(location.latitude.toString(), location.longitude.toString())
         }
     }
 }

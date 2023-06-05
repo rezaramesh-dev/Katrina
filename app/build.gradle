@@ -121,4 +121,5 @@ dependencies {
 
     //Ads
     implementation 'com.google.android.gms:play-services-ads:22.1.0'
+
 }
