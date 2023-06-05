@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,9 +10,31 @@
     tools:context=".screens.fragments.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consAnimLoading"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:visibility="gone"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animLoading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ads:lottie_autoPlay="true"
+            ads:lottie_loop="true"
+            ads:lottie_rawRes="@raw/loading_animation_blue" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/tvDate"
@@ -248,9 +270,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
                 android:fontFamily="@font/poppins_bold"
+                android:maxLength="17"
                 android:textColor="#CFB7FF"
                 android:textSize="17sp"
-                android:maxLength="17"
                 android:translationY="-10dp"
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toBottomOf="@+id/tvTemperature" />
@@ -311,9 +333,9 @@
                 ads:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/consStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/consStatus"
                 android:layout_marginEnd="20dp"
                 ads:layout_constraintBottom_toBottomOf="parent"
                 ads:layout_constraintEnd_toEndOf="parent"
@@ -344,12 +366,27 @@
             android:layout_marginStart="26dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_extra_bold"
-            android:text="Today"
+            android:text="@string/today"
             android:textColor="#D6D6D6"
             android:textSize="20sp"
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toBottomOf="@+id/consAQI" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWeatherToday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:divider="@null"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:scrollbars="horizontal"
+            ads:layout_constraintTop_toBottomOf="@+id/tvTitleToday"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:reverseLayout="true"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_list_weather_today" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

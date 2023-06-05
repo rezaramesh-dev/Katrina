@@ -25,6 +25,7 @@ import com.onestackdev.katrina.R
 import com.onestackdev.katrina.data.AqiApiRepository
 import com.onestackdev.katrina.data.WeatherApiRepository
 import com.onestackdev.katrina.databinding.FragmentHomeBinding
+import com.onestackdev.katrina.model.Forecast
 import com.onestackdev.katrina.screens.activities.MainActivity
 import com.onestackdev.katrina.utils.buildLocationRequest
 import com.onestackdev.katrina.utils.checkLocationStatus
@@ -132,6 +133,9 @@ class HomeFragment : Fragment() {
             when (response.code()) {
                 200 -> {
                     response.body().apply {
+
+                        setupRvWeatherToday(this.forecast)
+
                         binding.tvCity.text = "${this!!.location.name}, ${location.country}"
                         binding.tvDate.text = location.localtime
                         binding.tvTemperature.text = tempFormat(this.current.temp_c.toString())
@@ -158,6 +162,12 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun setupRvWeatherToday(forecast: Forecast) {
+
+
+
+    }
+
     @SuppressLint("SetTextI18n")
     private fun getAQI(lat: String, lon: String) {
         CoroutineScope(Main).launch(handler) {
@@ -166,6 +176,8 @@ class HomeFragment : Fragment() {
                 200 -> {
                     response.body()?.data.apply {
                         binding.tvAQI.text = this?.current?.pollution?.aqius.toString()
+                        binding.consAnimLoading.visibility = View.GONE
+                        binding.consMain.visibility = View.VISIBLE
 
                         if (this?.current?.pollution?.aqius!! < 50) {
 

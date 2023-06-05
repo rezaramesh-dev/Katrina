@@ -6,9 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Not Support Tablet and Tv -->
 
-    <!--Not Support Tablet and Tv-->
     <supports-screens
         android:largeScreens="false"
         android:normalScreens="true"
@@ -27,18 +26,24 @@
         android:theme="@style/Theme.Katrina"
         tools:targetApi="31">
         <activity
-            android:name=".screens.activities.MainActivity"
-            android:exported="true">
+            android:name=".screens.activities.SplashActivity"
+            android:exported="true"
+            android:theme="@style/splashStyle"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".screens.activities.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1735842332311891~9428989536"/>
+            android:value="ca-app-pub-1735842332311891~9428989536" />
     </application>
 
 </manifest>
