@@ -60,6 +60,12 @@ fun setUpRecyclerVERTICAL(activity: AppCompatActivity?, rv: RecyclerView) {
     rv.itemAnimator = DefaultItemAnimator()
 }
 
+fun setUpRecyclerHorizontal(activity: AppCompatActivity?, rv: RecyclerView) {
+    rv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+    rv.setHasFixedSize(true)
+    rv.itemAnimator = DefaultItemAnimator()
+}
+
 fun turnOnLocation(activity: AppCompatActivity, locationRequest: LocationRequest) {
     val requestCode = 1000
     val builder: LocationSettingsRequest.Builder = LocationSettingsRequest.Builder()

@@ -40,11 +40,13 @@
             tools:ignore="ContentDescription" />
 
         <TextView
+            android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:text="1:00 AM"
             android:textColor="#767676"
+            android:layout_marginTop="4dp"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

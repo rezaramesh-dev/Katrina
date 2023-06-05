@@ -25,14 +25,18 @@ import com.onestackdev.katrina.R
 import com.onestackdev.katrina.data.AqiApiRepository
 import com.onestackdev.katrina.data.WeatherApiRepository
 import com.onestackdev.katrina.databinding.FragmentHomeBinding
-import com.onestackdev.katrina.model.Forecast
+import com.onestackdev.katrina.model.Hour
+import com.onestackdev.katrina.model.WeatherAPIModel
 import com.onestackdev.katrina.screens.activities.MainActivity
 import com.onestackdev.katrina.utils.buildLocationRequest
 import com.onestackdev.katrina.utils.checkLocationStatus
 import com.onestackdev.katrina.utils.handler
 import com.onestackdev.katrina.utils.returnImageWeather
+import com.onestackdev.katrina.utils.setUpRecyclerHorizontal
+import com.onestackdev.katrina.utils.setUpRecyclerVERTICAL
 import com.onestackdev.katrina.utils.tempFormat
 import com.onestackdev.katrina.utils.turnOnLocation
+import com.onestackdev.katrina.viewmodel.TodayWeatherAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -53,6 +57,9 @@ class HomeFragment : Fragment() {
 
     @Inject
     lateinit var aqiApi: AqiApiRepository
+
+    @Inject
+    lateinit var todayAdapter: TodayWeatherAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -134,7 +141,12 @@ class HomeFragment : Fragment() {
                 200 -> {
                     response.body().apply {
 
-                        setupRvWeatherToday(this.forecast)
+                        this?.forecast?.let {
+                            setupRvWeatherToday(
+                                it.forecastday[0].hour,
+                                response.body()
+                            )
+                        }
 
                         binding.tvCity.text = "${this!!.location.name}, ${location.country}"
                         binding.tvDate.text = location.localtime
@@ -162,10 +174,22 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupRvWeatherToday(forecast: Forecast) {
+    private fun setupRvWeatherToday(hour: List<Hour>, weather: WeatherAPIModel?) {
 
+        val selectHour = ArrayList<Hour>()
 
+        for (items in hour) {
+            if (items.time_epoch > weather?.location?.localtime_epoch!!) {
+                selectHour.add(items)
+            }
+        }
 
+        todayAdapter.differ.submitList(selectHour)
+
+        binding.rvWeatherToday.apply {
+            setUpRecyclerHorizontal(MainActivity.activity, this)
+            adapter = todayAdapter
+        }
     }
 
     @SuppressLint("SetTextI18n")
