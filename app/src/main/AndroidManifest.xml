@@ -28,8 +28,10 @@
         <activity
             android:name=".screens.activities.SplashActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/splashStyle"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +41,9 @@
         <activity
             android:name=".screens.activities.MainActivity"
             android:exported="true"
-            android:launchMode="singleTask" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            tools:ignore="LockedOrientationActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
