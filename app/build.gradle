@@ -45,7 +45,7 @@ android {
 }
 
 dependencies {
-    def lottieVersion = '6.0.0'
+    def lottieVersion = '6.0.1'
     //implementation platform('com.google.firebase:firebase-bom:32.1.0')
 
     implementation 'androidx.core:core-ktx:1.10.1'
@@ -99,8 +99,8 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
     //navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
 
     //Hilt
     implementation 'com.google.dagger:hilt-android:2.46.1'

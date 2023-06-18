@@ -9,4 +9,8 @@ class WeatherApiRepository @Inject constructor(@Named("WeatherRetrofit") private
     suspend fun getWeather(latLng: String) = apiService.getWeather(
         tokenApi = API_KEY_WEATHER, latLong = latLng, days = "1", aqi = "no", alert = "no"
     )
+
+    suspend fun getWeatherTenDays(latLng: String) = apiService.getWeather(
+        tokenApi = API_KEY_WEATHER, latLong = latLng, days = "10", aqi = "no", alert = "no"
+    )
 }
